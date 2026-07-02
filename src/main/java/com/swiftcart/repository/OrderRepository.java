@@ -26,7 +26,7 @@ public interface OrderRepository extends JpaRepository<Order, Long>{
 	@Query("Select o From Order o " + 
 		   "LEFT JOIN FETCH o.orderItems oi " +
 		   "LEFT JOIN FETCH oi.product " +
-		   "Where o.id = :orderId"
+		   "Where o.id = :orderId "
 		  )
 	public Optional<Order> findByIdWithItems(@Param("orderId") Long orderId);
 	
@@ -34,14 +34,17 @@ public interface OrderRepository extends JpaRepository<Order, Long>{
 	@Query("Select o From Order o " + 
 		   "LEFT JOIN FETCH o.orderItems oi " +
 		   "LEFT JOIN FETCH oi.product " +
-		   "Where o.orderNumber = :orderNumber"
+		   "Where o.orderNumber = :orderNumber "
 		  )
-	public Optional<Order> findByOrderNumberWithItems(@Param("orderNumber") Long orderNumber);
+	public Optional<Order> findByOrderNumberWithItems(@Param("orderNumber") String orderNumber);
 		
 	//Search orders by order number, customer name, or email --->
-	@Query("SELECT o FROM Order o.orderNumber LIKE %:keyword% " +
-		       "OR o.user.fullName like %:keyword% " +
-			   "OR o.user.email like %:keyword%"
-			)
+	@Query("""
+			SELECT o
+			FROM Order o
+			WHERE o.orderNumber LIKE CONCAT('%', :keyword, '%')
+			   OR o.user.fullName LIKE CONCAT('%', :keyword, '%')
+			   OR o.user.email LIKE CONCAT('%', :keyword, '%')
+			""")
 	public Page<Order> searchOrders(@Param("keyword") String keyword, Pageable pageble);
 }
