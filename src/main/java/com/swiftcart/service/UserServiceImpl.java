@@ -16,7 +16,10 @@ import com.swiftcart.exception.DuplicateResourceException;
 import com.swiftcart.exception.ResourceNotFoundException;
 import com.swiftcart.repository.UserRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
+@Transactional
 public class UserServiceImpl implements UserService{
 	
 	private UserRepository userRepo;

@@ -20,7 +20,10 @@ import com.swiftcart.exception.DuplicateResourceException;
 import com.swiftcart.exception.ResourceNotFoundException;
 import com.swiftcart.repository.ProductRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
+@Transactional
 public class ProductServiceImpl implements ProductService{
 	
 	private ProductRepository repo;
