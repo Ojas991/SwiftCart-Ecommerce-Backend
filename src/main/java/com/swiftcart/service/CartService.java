@@ -21,9 +21,9 @@ public interface CartService {
 	
 	public boolean isProductInCart(Long userId, Long productId);
 	
-	public CartItemResponseDto incrementItemQuantity(Long userId, AddToCartRequestDto dto, int quantity);
+	public CartResponseDto incrementItemQuantity(Long userId, Long productId, int quantity);
 	
-	public CartItemResponseDto decrementItemQuantity(Long userId, AddToCartRequestDto dto, int quantity);
+	public CartResponseDto decrementItemQuantity(Long userId, Long productId, int quantity);
 	
 	
 }

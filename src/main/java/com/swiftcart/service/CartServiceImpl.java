@@ -120,4 +120,171 @@ public class CartServiceImpl implements CartService{
 				.build();
 	}
 
+	@Override
+	public CartResponseDto getCartByUserId(Long userId) {
+		
+		Cart cart= getCart(userId);
+		return mapToCartResponseDto(cart);
+	}
+
+	@Override
+	public CartResponseDto addItemToCart(Long userId, AddToCartRequestDto dto) {
+		//Get Cart
+		Cart cart= getCart(userId);
+		
+		//Fetch the Product
+		Product product= findProductById(dto.getProductId());
+		
+		//Validate the Qty
+		validateProductAvailability(product, dto.getQuantity());
+		Optional<CartItem> opt= cartItemRepo.findByCartIdAndProductId(cart.getId(), product.getId());
+		
+		if(opt.isPresent()) {
+			CartItem cartItem= opt.get();
+			int newQty= cartItem.getQuantity() + dto.getQuantity();
+			validateProductAvailability(product, newQty);
+			cartItem.setQuantity(newQty);
+			cartItem.calculateSubtotal();
+			cartItemRepo.save(cartItem);
+		}
+		else {
+			CartItem cartItem= CartItem.builder()
+					.product(product)
+					.quantity(dto.getQuantity())
+					.unitPrice(product.getPrice())
+					.build();
+			
+			cartItem.calculateSubtotal();
+			cart.addCartItem(cartItem);
+		}
+		cartRepo.save(cart);
+		return mapToCartResponseDto(cart);
+	}
+
+	@Override
+	public CartResponseDto updateCartItem(Long userId, Long cartItemId, UpdateCartItemRequestDto dto) {
+		
+		Cart cart= getCart(userId);
+		
+		CartItem cartItem= findCartItemById(cartItemId);
+		
+		if(! cartItem.getCart().getId().equals(cart.getId())) {
+			throw new ResourceNotFoundException("CartItem", "id", cartItem);
+		}
+		validateProductAvailability(cartItem.getProduct(), dto.getQuantity());
+		cartItem.setQuantity(dto.getQuantity());
+		cartItem.calculateSubtotal();
+		cart.reCalculateTotals();
+		cartRepo.save(cart);
+		
+		return mapToCartResponseDto(cart);
+	}
+
+	@Override
+	public CartResponseDto removeItemFromCart(Long userId, Long cartItemId) {
+
+		Cart cart= getCart(userId);
+		CartItem cartItem= findCartItemById(cartItemId);
+		
+		if(! cartItem.getCart().getId().equals(cart.getId())) {
+			throw new ResourceNotFoundException("CartItem", "id", cartItem);
+		}
+		
+		cart.removeCartItems(cartItem);
+		cart.reCalculateTotals();
+		cartRepo.save(cart);
+		
+		return mapToCartResponseDto(cart);
+	}
+
+	@Override
+	public CartResponseDto clearCart(Long userId) {
+
+		Cart cart= getCart(userId);
+		cart.clearCart();
+		cartRepo.save(cart);
+		return mapToCartResponseDto(cart);
+	}
+
+	@Override
+	public CartItemResponseDto getCartItem(Long userId, Long cartItemId) {
+		
+		Cart cart= getCart(userId);
+		CartItem cartItem= findCartItemById(cartItemId);
+		
+		
+		if(! cartItem.getCart().getId().equals(cart.getId())) {
+			throw new ResourceNotFoundException("CartItem", "id", cartItem);
+		}
+		
+		return mapToCartItemResponseDto(cartItem);
+	}
+
+	@Override
+	public boolean isProductInCart(Long userId, Long productId) {
+		
+		Optional<Cart> opt= cartRepo.findByUserId(userId);
+		
+		if(! opt.isPresent()) {
+			return false;
+		}
+		Cart cart= opt.get();
+		return cartItemRepo.existsByCartIdAndProductId(cart.getId(), productId);
+	}
+
+	@Override
+	public CartResponseDto incrementItemQuantity(Long userId, Long productId, int quantity) {
+		
+		if(quantity <=0) { 
+			throw new IllegalArgumentException("Quantity must be Positive."); 
+		} 
+		Cart cart= getCart(userId); 
+		Optional<CartItem> opt= cartItemRepo.findByCartIdAndProductId(cart.getId(), productId);
+		
+		if(! opt.isPresent()) { 
+			throw new ResourceNotFoundException("CartItem", "productId", productId); 
+		}
+		
+		CartItem cartItem= opt.get(); 
+		int newQty= cartItem.getQuantity() + quantity; 
+		validateProductAvailability(cartItem.getProduct(), newQty); 
+		cartItem.setQuantity(newQty); 
+		cartItem.calculateSubtotal(); 
+		cart.reCalculateTotals(); 
+		cartRepo.save(cart); 
+		return mapToCartResponseDto(cart);
+	}
+
+	@Override
+	public CartResponseDto decrementItemQuantity(Long userId, Long productId, int quantity) {
+		
+		if(quantity <=0) { 
+			throw new IllegalArgumentException("Quantity must be Positive."); 
+		} 
+		
+		Cart cart= getCart(userId); 
+		Optional<CartItem> opt= cartItemRepo.findByCartIdAndProductId(cart.getId(), productId);
+		
+		if(! opt.isPresent()) { 
+			throw new ResourceNotFoundException("CartItem", "productid", productId); 
+		}
+		
+		CartItem cartItem= opt.get(); 
+		int newQty= cartItem.getQuantity() - quantity; 
+		
+		if(newQty <=0) {
+			cart.removeCartItems(cartItem);
+		}
+		else {
+			cartItem.setQuantity(newQty); 
+			cartItem.calculateSubtotal(); 
+		}
+		
+		cart.reCalculateTotals(); 
+		cartRepo.save(cart); 
+		return mapToCartResponseDto(cart);
+	}
+
+	
+	
 }
