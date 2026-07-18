@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.swiftcart.dto.request.ProductRequestDTO;
 import com.swiftcart.dto.request.UpdateProductRequestDTO;
-import com.swiftcart.dto.response.ApiResponseDTO;
+import com.swiftcart.dto.response.ApiResponseDto;
 import com.swiftcart.dto.response.PageResponseDTO;
 import com.swiftcart.dto.response.ProductResponseDTO;
 import com.swiftcart.service.ProductService;
@@ -41,115 +41,115 @@ public class ProductController {
 	
 	//Create Product--->
 	@PostMapping
-	public ResponseEntity<ApiResponseDTO<ProductResponseDTO>> createProduct(@Valid @RequestBody ProductRequestDTO dto){
+	public ResponseEntity<ApiResponseDto<ProductResponseDTO>> createProduct(@Valid @RequestBody ProductRequestDTO dto){
 		ProductResponseDTO respDTO= serv.createProduct(dto);
 		
-		return new ResponseEntity<>(ApiResponseDTO.success("Product Created Successfully", respDTO), HttpStatus.CREATED);
+		return new ResponseEntity<>(ApiResponseDto.success("Product Created Successfully", respDTO), HttpStatus.CREATED);
 	}
 	
 	//Get Product By Id--->
 	@GetMapping("/{id}")
-	public ResponseEntity<ApiResponseDTO<ProductResponseDTO>> getProductById(@PathVariable Long id){
+	public ResponseEntity<ApiResponseDto<ProductResponseDTO>> getProductById(@PathVariable Long id){
 		
 		ProductResponseDTO respDTO = serv.getProductById(id);
 		
-		return ResponseEntity.ok(ApiResponseDTO.success(respDTO));
+		return ResponseEntity.ok(ApiResponseDto.success(respDTO));
 	}
 	
 	//Get Product By Sku--->
 	@GetMapping("/sku/{sku}")
-	public ResponseEntity<ApiResponseDTO<ProductResponseDTO>> getProductBySku(@PathVariable String sku){
+	public ResponseEntity<ApiResponseDto<ProductResponseDTO>> getProductBySku(@PathVariable String sku){
 		
 		ProductResponseDTO respDTO = serv.getProductBySku(sku);
 		
-		return ResponseEntity.ok(ApiResponseDTO.success(respDTO));
+		return ResponseEntity.ok(ApiResponseDto.success(respDTO));
 	}
 	
 	//Get All Products--->
 	@GetMapping("/all")
-	public ResponseEntity<ApiResponseDTO<List<ProductResponseDTO>>> getAllProducts(){
+	public ResponseEntity<ApiResponseDto<List<ProductResponseDTO>>> getAllProducts(){
 		List<ProductResponseDTO> pList= serv.getAllProducts();
 		
-		return ResponseEntity.ok(ApiResponseDTO.success("fetched : " + pList.size() + " products", pList));
+		return ResponseEntity.ok(ApiResponseDto.success("fetched : " + pList.size() + " products", pList));
 	}
 	
 	//Get All Products Paginated--->
 	@GetMapping
-	public ResponseEntity<ApiResponseDTO<PageResponseDTO<ProductResponseDTO>>> getAllProductsPaginated(@RequestParam(defaultValue="0") int page, 
+	public ResponseEntity<ApiResponseDto<PageResponseDTO<ProductResponseDTO>>> getAllProductsPaginated(@RequestParam(defaultValue="0") int page, 
 			                @RequestParam(defaultValue="10") int size, 
 			                @RequestParam(defaultValue="id") String sortBy, @RequestParam(defaultValue="asc") String sortDir){
 		
 		PageResponseDTO<ProductResponseDTO> products= serv.getAllProductsPaginated(page, size, sortBy, sortDir);
 		
-		return ResponseEntity.ok(ApiResponseDTO.success(products));
+		return ResponseEntity.ok(ApiResponseDto.success(products));
 		
 	}
 	
 	//Get Available Products--->
 	@GetMapping("/available")
-	public ResponseEntity<ApiResponseDTO<List<ProductResponseDTO>>> getAvailableProducts(){
+	public ResponseEntity<ApiResponseDto<List<ProductResponseDTO>>> getAvailableProducts(){
 		List<ProductResponseDTO> pList= serv.getAvailableProducts();
 		
-		return ResponseEntity.ok(ApiResponseDTO.success(pList));
+		return ResponseEntity.ok(ApiResponseDto.success(pList));
 	}
 
 	//Get Products By Category--->
 	@GetMapping("/category/{category}")
-	public ResponseEntity<ApiResponseDTO<List<ProductResponseDTO>>> getProductsByCategory(@PathVariable String category){
+	public ResponseEntity<ApiResponseDto<List<ProductResponseDTO>>> getProductsByCategory(@PathVariable String category){
 		List<ProductResponseDTO> pList= serv.getProductsByCategory(category);
 		
-		return ResponseEntity.ok(ApiResponseDTO.success(pList));
+		return ResponseEntity.ok(ApiResponseDto.success(pList));
 	}
 	
 	//Get Products By Price Range--->
 	@GetMapping("/price-range")
-	public ResponseEntity<ApiResponseDTO<List<ProductResponseDTO>>> getProductsByPriceRange(@RequestParam double min, @RequestParam double max){
+	public ResponseEntity<ApiResponseDto<List<ProductResponseDTO>>> getProductsByPriceRange(@RequestParam double min, @RequestParam double max){
 		List<ProductResponseDTO> pList= serv.getProductsByPriceRange(min, max);
 		
-		return ResponseEntity.ok(ApiResponseDTO.success(pList));
+		return ResponseEntity.ok(ApiResponseDto.success(pList));
 	}
 	
 	//Search Products--->
 	@GetMapping("/search")
-	public ResponseEntity<ApiResponseDTO<PageResponseDTO<ProductResponseDTO>>> searchProducts(@RequestParam String keyword, 
+	public ResponseEntity<ApiResponseDto<PageResponseDTO<ProductResponseDTO>>> searchProducts(@RequestParam String keyword, 
 			       @RequestParam(defaultValue="0") int page, 
 			       @RequestParam(defaultValue="10") int size){
 		
 		PageResponseDTO<ProductResponseDTO> products= serv.searchProducts(keyword, page, size);
 		
-		return ResponseEntity.ok(ApiResponseDTO.success(products));
+		return ResponseEntity.ok(ApiResponseDto.success(products));
 	}
 	
 	//Update Product--->
 	@PutMapping("/update/{id}")
-	public ResponseEntity<ApiResponseDTO<ProductResponseDTO>> updateProduct(@PathVariable Long id, 
+	public ResponseEntity<ApiResponseDto<ProductResponseDTO>> updateProduct(@PathVariable Long id, 
 			                                        @Valid @RequestBody UpdateProductRequestDTO dto){
 		ProductResponseDTO respDTO= serv.updateProduct(id, dto);
 		
-		return ResponseEntity.ok(ApiResponseDTO.success("Product Updated Successfully "+respDTO));
+		return ResponseEntity.ok(ApiResponseDto.success("Product Updated Successfully "+respDTO));
 	}
 	
 	//Update Stock--->
 	@PatchMapping("/{id}/stock")
-	public ResponseEntity<ApiResponseDTO<Void>> updateStock(@PathVariable Long id, @RequestParam Integer quantity){
+	public ResponseEntity<ApiResponseDto<Void>> updateStock(@PathVariable Long id, @RequestParam Integer quantity){
 		serv.updateStock(id, quantity);
 		
-		return ResponseEntity.ok(ApiResponseDTO.success("Stock Updated Successfully"));
+		return ResponseEntity.ok(ApiResponseDto.success("Stock Updated Successfully"));
 	}
 	
 	//Get Low Stock Products--->
 	@GetMapping("/low-stock")
-	public ResponseEntity<ApiResponseDTO<List<ProductResponseDTO>>> getLowStockProducts(@RequestParam(defaultValue= "10") Integer threshold){
+	public ResponseEntity<ApiResponseDto<List<ProductResponseDTO>>> getLowStockProducts(@RequestParam(defaultValue= "10") Integer threshold){
 		List<ProductResponseDTO> pList= serv.getLowStockProducts(threshold);
 		
-		return ResponseEntity.ok(ApiResponseDTO.success(pList));
+		return ResponseEntity.ok(ApiResponseDto.success(pList));
 	}
 	
 	//Check sku Exists--->
 	@GetMapping("/check-sku/{sku}")
-	public ResponseEntity<ApiResponseDTO<Boolean>> checkSkuExists(@PathVariable String sku){
+	public ResponseEntity<ApiResponseDto<Boolean>> checkSkuExists(@PathVariable String sku){
 		boolean exists= serv.existsBySku(sku);
 		
-		return ResponseEntity.ok(ApiResponseDTO.success(exists ? "sku Already Exists" : "Sku is Available", exists));
+		return ResponseEntity.ok(ApiResponseDto.success(exists ? "sku Already Exists" : "Sku is Available", exists));
 	}
 }

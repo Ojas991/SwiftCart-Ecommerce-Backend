@@ -16,7 +16,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ApiResponseDTO<T> {
+public class ApiResponseDto<T> {
 
 	private boolean success;
 	private String message;
@@ -32,8 +32,8 @@ public class ApiResponseDTO<T> {
 	 * Example:
 	 * "User created successfully" + UserResponseDTO
 	 */
-	public static <T> ApiResponseDTO<T> success(String message, T data) {
-		return ApiResponseDTO.<T>builder()
+	public static <T> ApiResponseDto<T> success(String message, T data) {
+		return ApiResponseDto.<T>builder()
 				.success(true)
 				.message(message)
 				.data(data)
@@ -46,8 +46,8 @@ public class ApiResponseDTO<T> {
 	 * Example:
 	 * "User created successfully" + UserResponseDTO
 	 */
-	public static <T> ApiResponseDTO<T> success(String message) {
-		return ApiResponseDTO.<T>builder()
+	public static <T> ApiResponseDto<T> success(String message) {
+		return ApiResponseDto.<T>builder()
 				.success(true)
 				.message(message)
 				.timeStamp(LocalDateTime.now())
@@ -59,8 +59,8 @@ public class ApiResponseDTO<T> {
 	 * Example:
 	 * Returning a list of users or a single user object.
 	 */
-	public static <T> ApiResponseDTO<T> success(T data) {
-		return ApiResponseDTO.<T>builder()
+	public static <T> ApiResponseDto<T> success(T data) {
+		return ApiResponseDto.<T>builder()
 				.success(true)
 				.data(data)
 				.timeStamp(LocalDateTime.now())

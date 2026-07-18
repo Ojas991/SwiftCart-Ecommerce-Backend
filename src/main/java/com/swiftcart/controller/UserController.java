@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.swiftcart.dto.request.UpdateUserRequestDTO;
 import com.swiftcart.dto.request.UserRequestDTO;
-import com.swiftcart.dto.response.ApiResponseDTO;
+import com.swiftcart.dto.response.ApiResponseDto;
 import com.swiftcart.dto.response.UserResponseDTO;
 import com.swiftcart.service.UserService;
 
@@ -40,106 +40,106 @@ public class UserController {
 	
 	//Create A User--->
 	@PostMapping
-	public ResponseEntity<ApiResponseDTO<UserResponseDTO>> createUser(@Valid @RequestBody UserRequestDTO userRequest) {
+	public ResponseEntity<ApiResponseDto<UserResponseDTO>> createUser(@Valid @RequestBody UserRequestDTO userRequest) {
 		
 		UserResponseDTO dto = serv.createUser(userRequest);
 		
-		ApiResponseDTO<UserResponseDTO>  obj = ApiResponseDTO.success("User Created Successfully", dto);
+		ApiResponseDto<UserResponseDTO>  obj = ApiResponseDto.success("User Created Successfully", dto);
 		
 		return new ResponseEntity<>(obj, HttpStatus.CREATED);
 	}
 	
 	//Get User By Id--->
 	@GetMapping("/{id}")
-	public ResponseEntity<ApiResponseDTO<UserResponseDTO>> getUserById(@PathVariable Long id) {
+	public ResponseEntity<ApiResponseDto<UserResponseDTO>> getUserById(@PathVariable Long id) {
 		
 		UserResponseDTO dto = serv.getUserById(id);
 		
-		ApiResponseDTO<UserResponseDTO>  obj = ApiResponseDTO.success(dto);
+		ApiResponseDto<UserResponseDTO>  obj = ApiResponseDto.success(dto);
 		
 		return ResponseEntity.ok(obj);
 	}
 	
 	//Get User By Email--->
 	@GetMapping("/email/{email}")
-	public ResponseEntity<ApiResponseDTO<UserResponseDTO>> getUserByEmail(@PathVariable String email) {
+	public ResponseEntity<ApiResponseDto<UserResponseDTO>> getUserByEmail(@PathVariable String email) {
 		
 		UserResponseDTO dto = serv.getUserByEmail(email);
 		
-		ApiResponseDTO<UserResponseDTO>  obj = ApiResponseDTO.success(dto);
+		ApiResponseDto<UserResponseDTO>  obj = ApiResponseDto.success(dto);
 		
 		return ResponseEntity.ok(obj);
 	}
 	
 	//Get All Users--->
 	@GetMapping
-	public ResponseEntity<ApiResponseDTO<List<UserResponseDTO>>> getAllUsers() {
+	public ResponseEntity<ApiResponseDto<List<UserResponseDTO>>> getAllUsers() {
 		
 		List<UserResponseDTO> users = serv.getAllUsers();
 		
-		ApiResponseDTO<List<UserResponseDTO>>  obj = ApiResponseDTO.success(users);
+		ApiResponseDto<List<UserResponseDTO>>  obj = ApiResponseDto.success(users);
 		
 		return ResponseEntity.ok(obj);
 	}
 	
 	//Get Active Users--->
 	@GetMapping("/active")
-	public ResponseEntity<ApiResponseDTO<List<UserResponseDTO>>> getActiveUsers() {
+	public ResponseEntity<ApiResponseDto<List<UserResponseDTO>>> getActiveUsers() {
 		
 		List<UserResponseDTO> users = serv.getActiveUsers();
 		
-		ApiResponseDTO<List<UserResponseDTO>>  obj = ApiResponseDTO.success(users);
+		ApiResponseDto<List<UserResponseDTO>>  obj = ApiResponseDto.success(users);
 		
 		return ResponseEntity.ok(obj);
 	}
 	
 	//Update A User--->
 	@PutMapping("/{id}")
-	public ResponseEntity<ApiResponseDTO<UserResponseDTO>> updateUser(@PathVariable Long id,@Valid @RequestBody UpdateUserRequestDTO userRequest) {
+	public ResponseEntity<ApiResponseDto<UserResponseDTO>> updateUser(@PathVariable Long id,@Valid @RequestBody UpdateUserRequestDTO userRequest) {
 		
 		UserResponseDTO dto = serv.updateUser(id, userRequest);
 		
-		ApiResponseDTO<UserResponseDTO>  obj = ApiResponseDTO.success("User updated Successfully", dto);
+		ApiResponseDto<UserResponseDTO>  obj = ApiResponseDto.success("User updated Successfully", dto);
 		
 		return ResponseEntity.ok(obj);
 	}
 	
 	//Activate User--->
 	@PatchMapping("/{id}/activate")
-	public ResponseEntity<ApiResponseDTO<Void>> activateUser(@PathVariable Long id) {
+	public ResponseEntity<ApiResponseDto<Void>> activateUser(@PathVariable Long id) {
 		
 	    serv.activateUser(id);
 		
-		return ResponseEntity.ok(ApiResponseDTO.success("User activated Successfully"));
+		return ResponseEntity.ok(ApiResponseDto.success("User activated Successfully"));
 	}
 	
 	//De-Activate User--->
 	@PatchMapping("/{id}/deactivate")
-	public ResponseEntity<ApiResponseDTO<Void>> deActivateUser(@PathVariable Long id) {
+	public ResponseEntity<ApiResponseDto<Void>> deActivateUser(@PathVariable Long id) {
 		
 	    serv.deActivateUser(id);
 		
-		return ResponseEntity.ok(ApiResponseDTO.success("User de-activated Successfully"));
+		return ResponseEntity.ok(ApiResponseDto.success("User de-activated Successfully"));
 	}
 	
 	//Search User--->
 	@GetMapping("/search")
-	public ResponseEntity<ApiResponseDTO<List<UserResponseDTO>>> searchUsers(@RequestParam String keyword) {
+	public ResponseEntity<ApiResponseDto<List<UserResponseDTO>>> searchUsers(@RequestParam String keyword) {
 		
 		List<UserResponseDTO> users = serv.searchUser(keyword);
 		
-		ApiResponseDTO<List<UserResponseDTO>>  obj = ApiResponseDTO.success(users);
+		ApiResponseDto<List<UserResponseDTO>>  obj = ApiResponseDto.success(users);
 		
 		return ResponseEntity.ok(obj);
 	}
 	
 	//Check Email Exists or Not--->
 	@GetMapping("/check-email")
-	public ResponseEntity<ApiResponseDTO<Boolean>> checkEmailExists(@RequestParam String email) {
+	public ResponseEntity<ApiResponseDto<Boolean>> checkEmailExists(@RequestParam String email) {
 		
 		Boolean res= serv.existsByEmail(email);
 		
-		ApiResponseDTO<Boolean> obj = ApiResponseDTO.success(res ? "Email Already Exists" : "Email is Available for use");
+		ApiResponseDto<Boolean> obj = ApiResponseDto.success(res ? "Email Already Exists" : "Email is Available for use");
 		
 		return ResponseEntity.ok(obj);
 	}
