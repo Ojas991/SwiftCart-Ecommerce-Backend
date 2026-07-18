@@ -22,7 +22,7 @@ public class ApiResponseDto<T> {
 	private String message;
 	private LocalDateTime timeStamp;
 	private T data;
-	
+	private Object errors;
 	
 	//<-----Static Methods----->
 	
@@ -66,4 +66,18 @@ public class ApiResponseDto<T> {
 				.timeStamp(LocalDateTime.now())
 				.build();
 	}
+	
+	/**
+	 * Use when returning an error response.
+	 * Example:
+	 * "Validation failed" + validation errors
+	 */
+    public static <T> ApiResponseDto<T> error(String message, Object errors) {
+        return ApiResponseDto.<T>builder()
+                .success(false)
+                .message(message)
+                .errors(errors)
+                .timeStamp(LocalDateTime.now())
+                .build();
+    }
 }
