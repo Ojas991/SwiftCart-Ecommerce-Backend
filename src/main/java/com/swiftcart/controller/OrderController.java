@@ -50,7 +50,7 @@ public class OrderController {
     }
 
     //Get order by order number
-    @GetMapping("/number/{orderNumber}")
+    @GetMapping("/order-number/{orderNumber}")
     public ResponseEntity<ApiResponseDto<OrderResponseDto>> getOrderByOrderNumber(
             @PathVariable String orderNumber) {
         OrderResponseDto order = orderService.getOrderByOrderNumber(orderNumber);
