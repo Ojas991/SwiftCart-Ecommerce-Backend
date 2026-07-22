@@ -33,6 +33,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class Order {
+	
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Long id;
@@ -49,17 +50,19 @@ public class Order {
 	private List<OrderItem> orderItems= new ArrayList<>();
 	
 	@Column(nullable=false)
-	private Double totalAmount;
+	private double totalAmount;
 	
-	public final static String STATUS_CONFIRMED = "CONFIRMED";
-	public final static String STATUS_CANCELLED = "CANCELLED ";
-	@Column(nullable=false, length=20)
-	@Builder.Default
-	private String status= STATUS_CONFIRMED;
-	
+	public static final String STATUS_CONFIRMED = "CONFIRMED";
+    public static final String STATUS_CANCELLED = "CANCELLED";
+
+    @Column(nullable = false, length = 20)
+    @Builder.Default
+    private String status = STATUS_CONFIRMED;
+    
 	private String notes;
 	
 	private LocalDateTime orderDate;
+	
 	
 	//<---------------------Helper Methods--------------------->
 	

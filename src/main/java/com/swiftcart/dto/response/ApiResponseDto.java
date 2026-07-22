@@ -4,12 +4,14 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Schema(description = "Standard API response wrapper")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,10 +20,33 @@ import lombok.Setter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiResponseDto<T> {
 
+    @Schema(
+            description = "Indicates whether the request was successful",
+            example = "true"
+    )
 	private boolean success;
+    
+    @Schema(
+            description = "Response message",
+            example = "Order placed successfully"
+    )
 	private String message;
+    
+    @Schema(
+            description = "Timestamp when the response was generated",
+            example = "2026-07-23T10:30:00"
+    )
 	private LocalDateTime timeStamp;
+    
+
+    @Schema(
+        description = "Response payload"
+    )
 	private T data;
+
+    @Schema(
+        description = "Response payload"
+    )
 	private Object errors;
 	
 	//<-----Static Methods----->

@@ -1,5 +1,6 @@
 package com.swiftcart.controller;
 
+
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -21,9 +22,17 @@ import com.swiftcart.dto.response.OrderResponseDto;
 import com.swiftcart.dto.response.PageResponseDto;
 import com.swiftcart.service.OrderService;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+@Tag(
+	    name = "Order Management",
+	    description = "APIs for placing, retrieving, searching, updating, and cancelling orders"
+	)
 @RestController
 @RequestMapping("/api/orders")
 @RequiredArgsConstructor
@@ -33,6 +42,12 @@ public class OrderController {
     private final OrderService orderService;
 
     // Place a new order
+    @Operation(summary = "Place a new order")
+    @ApiResponses({
+        @ApiResponse(responseCode = "201", description = "Order placed successfully"),
+        @ApiResponse(responseCode = "400", description = "Invalid request"),
+        @ApiResponse(responseCode = "404", description = "User or cart not found")
+    })
     @PostMapping
     public ResponseEntity<ApiResponseDto<OrderResponseDto>> placeOrder(
             @Valid @RequestBody PlaceOrderRequestDto placeOrderRequestDto) {
@@ -43,6 +58,11 @@ public class OrderController {
     }
 
      //Get order by ID
+    @Operation(summary = "Get an order by its ID")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Order found"),
+        @ApiResponse(responseCode = "404", description = "Order not found")
+    })
     @GetMapping("/{orderId}")
     public ResponseEntity<ApiResponseDto<OrderResponseDto>> getOrderById(@PathVariable Long orderId) {
         OrderResponseDto order = orderService.getOrderById(orderId);
@@ -50,6 +70,7 @@ public class OrderController {
     }
 
     //Get order by order number
+    @Operation(summary = "Get an order by its order number")
     @GetMapping("/order-number/{orderNumber}")
     public ResponseEntity<ApiResponseDto<OrderResponseDto>> getOrderByOrderNumber(
             @PathVariable String orderNumber) {
@@ -57,7 +78,8 @@ public class OrderController {
         return ResponseEntity.ok(ApiResponseDto.success(order));
     }
 
-    // GET /api/orders/user/{userId}
+    //Get Order By User Id
+    @Operation(summary = "Get all orders placed by a user")
     @GetMapping("/user/{userId}")
     public ResponseEntity<ApiResponseDto<List<OrderResponseDto>>> getOrdersByUserId(
             @PathVariable Long userId) {
@@ -66,6 +88,7 @@ public class OrderController {
     }
 
     //Get all orders (paginated)
+    @Operation(summary = "Retrieve all orders with pagination")
     @GetMapping
     public ResponseEntity<ApiResponseDto<PageResponseDto<OrderResponseDto>>> getAllOrdersPaginated(
             @RequestParam(defaultValue = "0") int page,
@@ -77,6 +100,7 @@ public class OrderController {
     }
 
     //Get orders by status
+    @Operation(summary = "Retrieve orders by status")
     @GetMapping("/status/{status}")
     public ResponseEntity<ApiResponseDto<List<OrderResponseDto>>> getOrdersByStatus(
             @PathVariable String status) {
@@ -86,6 +110,11 @@ public class OrderController {
 
     //Update order status
     @PatchMapping("/{orderId}/status")
+    @Operation(summary = "Update the status of an order")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Order status updated successfully"),
+        @ApiResponse(responseCode = "404", description = "Order not found")
+    })
     public ResponseEntity<ApiResponseDto<OrderResponseDto>> updateOrderStatus(
             @PathVariable Long orderId,
             @Valid @RequestBody UpdateOrderStatusRequestDto updateOrderStatusRequestDto) {
@@ -94,6 +123,7 @@ public class OrderController {
     }
 
     //Cancel order
+    @Operation(summary = "Cancel an order")
     @PostMapping("/{orderId}/cancel")
     public ResponseEntity<ApiResponseDto<OrderResponseDto>> cancelOrder(
             @PathVariable Long orderId,
@@ -103,6 +133,7 @@ public class OrderController {
     }
 
     // Search orders
+    @Operation(summary = "Search orders using a keyword")
     @GetMapping("/search")
     public ResponseEntity<ApiResponseDto<PageResponseDto<OrderResponseDto>>> searchOrders(
             @RequestParam String keyword,

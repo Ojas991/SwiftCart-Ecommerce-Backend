@@ -9,21 +9,24 @@ import com.swiftcart.dto.response.PageResponseDto;
 
 public interface OrderService {
 
-	public OrderResponseDto placeOrder(PlaceOrderRequestDto placeOrderRequestDto);
-	
-	public OrderResponseDto getOrderById(Long orderId);
-	
-	public OrderResponseDto getOrderByOrderNumber(String orderNumber);
 
-	public List<OrderResponseDto> getOrdersByUserId(Long userId);
+    OrderResponseDto placeOrder(PlaceOrderRequestDto placeOrderRequestDto);
 
-	public PageResponseDto<OrderResponseDto> getAllOrdersPaginated(int page, int size, String sortBy, String sortDir);
+    OrderResponseDto getOrderById(Long orderId);
 
-	public List<OrderResponseDto> getOrdersByStatus(String status);
+    OrderResponseDto getOrderByOrderNumber(String orderNumber);
 
-	public OrderResponseDto updateOrderStatus(Long orderId, UpdateOrderStatusRequestDto updateOrderStatusRequestDTO);
+    List<OrderResponseDto> getOrdersByUserId(Long userId);
 
-	public OrderResponseDto cancelOrder(Long orderId, String reason);
+    PageResponseDto<OrderResponseDto> getAllOrdersPaginated(int page, int size, String sortBy, String sortDir);
 
-	public PageResponseDto<OrderResponseDto> searchOrders(String keyword, int page, int size);
+    List<OrderResponseDto> getOrdersByStatus(String status);
+
+    OrderResponseDto updateOrderStatus(Long orderId, UpdateOrderStatusRequestDto updateOrderStatusRequestDto);
+
+    OrderResponseDto cancelOrder(Long orderId, String reason);
+
+    PageResponseDto<OrderResponseDto> searchOrders(String keyword, int page, int size);
+    
+    
 }

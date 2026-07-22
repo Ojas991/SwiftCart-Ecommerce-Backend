@@ -14,37 +14,37 @@ import com.swiftcart.entity.Order;
 public interface OrderRepository extends JpaRepository<Order, Long>{
 	//Returns List of Orders of a Specific User in Descending Order of Date--->
 	
-	public List<Order> findByUserIdOrderByOrderDateDesc(Long userId);
-	
-	//Returns Orders of a Specific User based on Pagination--->
-	public Page<Order> findByUserId(Long userid, Pageable pageble);
-	
-	//Returns List of Orders based on Status--->
-	public List<Order> findByStatus(String status);
-	
-	//Returns Order with items on the basis orderId--->
-	@Query("Select o From Order o " + 
-		   "LEFT JOIN FETCH o.orderItems oi " +
-		   "LEFT JOIN FETCH oi.product " +
-		   "Where o.id = :orderId "
-		  )
-	public Optional<Order> findByIdWithItems(@Param("orderId") Long orderId);
-	
-	//Returns Order with items on the basis orderNumber--->
-	@Query("Select o From Order o " + 
-		   "LEFT JOIN FETCH o.orderItems oi " +
-		   "LEFT JOIN FETCH oi.product " +
-		   "Where o.orderNumber = :orderNumber "
-		  )
-	public Optional<Order> findByOrderNumberWithItems(@Param("orderNumber") String orderNumber);
+		public List<Order> findByUserIdOrderByOrderDateDesc(Long userId);
 		
-	//Search orders by order number, customer name, or email --->
-	@Query("""
-			SELECT o
-			FROM Order o
-			WHERE o.orderNumber LIKE CONCAT('%', :keyword, '%')
-			   OR o.user.fullName LIKE CONCAT('%', :keyword, '%')
-			   OR o.user.email LIKE CONCAT('%', :keyword, '%')
-			""")
-	public Page<Order> searchOrders(@Param("keyword") String keyword, Pageable pageble);
+		//Returns Orders of a Specific User based on Pagination--->
+		public Page<Order> findByUserId(Long userid, Pageable pageble);
+		
+		//Returns List of Orders based on Status--->
+		public List<Order> findByStatus(String status);
+		
+		//Returns Order with items on the basis orderId--->
+		@Query("Select o From Order o " + 
+			   "LEFT JOIN FETCH o.orderItems oi " +
+			   "LEFT JOIN FETCH oi.product " +
+			   "Where o.id = :orderId "
+			  )
+		public Optional<Order> findByIdWithItems(@Param("orderId") Long orderId);
+		
+		//Returns Order with items on the basis orderNumber--->
+		@Query("Select o From Order o " + 
+			   "LEFT JOIN FETCH o.orderItems oi " +
+			   "LEFT JOIN FETCH oi.product " +
+			   "Where o.orderNumber = :orderNumber "
+			  )
+		public Optional<Order> findByOrderNumberWithItems(@Param("orderNumber") String orderNumber);
+			
+		//Search orders by order number, customer name, or email --->
+		@Query("""
+				SELECT o
+				FROM Order o
+				WHERE o.orderNumber LIKE CONCAT('%', :keyword, '%')
+				   OR o.user.fullName LIKE CONCAT('%', :keyword, '%')
+				   OR o.user.email LIKE CONCAT('%', :keyword, '%')
+				""")
+		public Page<Order> searchOrders(@Param("keyword") String keyword, Pageable pageble);
 }
