@@ -23,9 +23,18 @@ import com.swiftcart.dto.response.PageResponseDto;
 import com.swiftcart.dto.response.ProductResponseDto;
 import com.swiftcart.service.ProductService;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+@Tag(
+	    name = "Product Management",
+	    description = "APIs for managing products including creation, retrieval, searching, updating, stock management, and SKU validation."
+	)
 @RestController
 @RequestMapping("/api/products")
 @RequiredArgsConstructor
@@ -40,6 +49,16 @@ public class ProductController {
 	}
 	
 	//Create Product--->
+	@Operation(
+		    summary = "Create a new product",
+		    description = "Creates a new product and stores it in the database."
+	)
+	@ApiResponses({
+		    @ApiResponse(responseCode = "201", description = "Product created successfully"),
+		    @ApiResponse(responseCode = "400", description = "Invalid request data"),
+		    @ApiResponse(responseCode = "409", description = "SKU already exists"),
+		    @ApiResponse(responseCode = "500", description = "Internal server error")
+	})
 	@PostMapping
 	public ResponseEntity<ApiResponseDto<ProductResponseDto>> createProduct(@Valid @RequestBody ProductRequestDto dto){
 		ProductResponseDto respDTO= serv.createProduct(dto);
@@ -48,6 +67,14 @@ public class ProductController {
 	}
 	
 	//Get Product By Id--->
+	@Operation(
+			summary = "Get product by ID",
+		    description = "Retrieves a product using its unique identifier."
+	)
+	@ApiResponses({
+		    @ApiResponse(responseCode = "200", description = "Product retrieved successfully"),
+		    @ApiResponse(responseCode = "404", description = "Product not found")
+	})
 	@GetMapping("/{id}")
 	public ResponseEntity<ApiResponseDto<ProductResponseDto>> getProductById(@PathVariable Long id){
 		
@@ -57,6 +84,14 @@ public class ProductController {
 	}
 	
 	//Get Product By Sku--->
+	@Operation(
+		    summary = "Get product by SKU",
+		    description = "Retrieves a product using its Stock Keeping Unit."
+	)
+	@ApiResponses({
+		    @ApiResponse(responseCode = "200", description = "Product retrieved successfully"),
+		    @ApiResponse(responseCode = "404", description = "Product not found")
+	})
 	@GetMapping("/sku/{sku}")
 	public ResponseEntity<ApiResponseDto<ProductResponseDto>> getProductBySku(@PathVariable String sku){
 		
@@ -66,6 +101,13 @@ public class ProductController {
 	}
 	
 	//Get All Products--->
+	@Operation(
+		    summary = "Get all products",
+		    description = "Retrieves all available products."
+	)
+	@ApiResponses({
+		    @ApiResponse(responseCode = "200", description = "Products retrieved successfully")
+	})
 	@GetMapping("/all")
 	public ResponseEntity<ApiResponseDto<List<ProductResponseDto>>> getAllProducts(){
 		List<ProductResponseDto> pList= serv.getAllProducts();
@@ -74,6 +116,13 @@ public class ProductController {
 	}
 	
 	//Get All Products Paginated--->
+	@Operation(
+		    summary = "Get paginated products",
+		    description = "Retrieves products with pagination, sorting, and ordering."
+	)
+	@ApiResponses({
+		    @ApiResponse(responseCode = "200", description = "Products retrieved successfully")
+	})
 	@GetMapping
 	public ResponseEntity<ApiResponseDto<PageResponseDto<ProductResponseDto>>> getAllProductsPaginated(@RequestParam(defaultValue="0") int page, 
 			                @RequestParam(defaultValue="10") int size, 
@@ -86,6 +135,10 @@ public class ProductController {
 	}
 	
 	//Get Available Products--->
+	@Operation(
+		    summary = "Get available products",
+		    description = "Retrieves all products currently available for purchase."
+	)
 	@GetMapping("/available")
 	public ResponseEntity<ApiResponseDto<List<ProductResponseDto>>> getAvailableProducts(){
 		List<ProductResponseDto> pList= serv.getAvailableProducts();
@@ -94,6 +147,10 @@ public class ProductController {
 	}
 
 	//Get Products By Category--->
+	@Operation(
+		    summary = "Get products by category",
+		    description = "Retrieves all products belonging to a specific category."
+	)
 	@GetMapping("/category/{category}")
 	public ResponseEntity<ApiResponseDto<List<ProductResponseDto>>> getProductsByCategory(@PathVariable String category){
 		List<ProductResponseDto> pList= serv.getProductsByCategory(category);
@@ -102,6 +159,10 @@ public class ProductController {
 	}
 	
 	//Get Products By Price Range--->
+	@Operation(
+		    summary = "Get products by price range",
+		    description = "Retrieves products within the specified minimum and maximum price range."
+	)
 	@GetMapping("/price-range")
 	public ResponseEntity<ApiResponseDto<List<ProductResponseDto>>> getProductsByPriceRange(@RequestParam double min, @RequestParam double max){
 		List<ProductResponseDto> pList= serv.getProductsByPriceRange(min, max);
@@ -110,6 +171,10 @@ public class ProductController {
 	}
 	
 	//Search Products--->
+	@Operation(
+		    summary = "Search products",
+		    description = "Searches products by keyword with pagination support."
+	)
 	@GetMapping("/search")
 	public ResponseEntity<ApiResponseDto<PageResponseDto<ProductResponseDto>>> searchProducts(@RequestParam String keyword, 
 			       @RequestParam(defaultValue="0") int page, 
@@ -121,6 +186,15 @@ public class ProductController {
 	}
 	
 	//Update Product--->
+	@Operation(
+		    summary = "Update product",
+		    description = "Updates the details of an existing product."
+	)
+	@ApiResponses({
+		    @ApiResponse(responseCode = "200", description = "Product updated successfully"),
+		    @ApiResponse(responseCode = "404", description = "Product not found"),
+		    @ApiResponse(responseCode = "400", description = "Invalid request data")
+	})
 	@PutMapping("/update/{id}")
 	public ResponseEntity<ApiResponseDto<ProductResponseDto>> updateProduct(@PathVariable Long id, 
 			                                        @Valid @RequestBody UpdateProductRequestDto dto){
@@ -130,6 +204,10 @@ public class ProductController {
 	}
 	
 	//Update Stock--->
+	@Operation(
+		    summary = "Update product stock",
+		    description = "Updates the stock quantity of a product."
+	)
 	@PatchMapping("/{id}/stock")
 	public ResponseEntity<ApiResponseDto<Void>> updateStock(@PathVariable Long id, @RequestParam Integer quantity){
 		serv.updateStock(id, quantity);
@@ -138,6 +216,10 @@ public class ProductController {
 	}
 	
 	//Get Low Stock Products--->
+	@Operation(
+		    summary = "Get low stock products",
+		    description = "Retrieves products whose stock is below the specified threshold."
+	)
 	@GetMapping("/low-stock")
 	public ResponseEntity<ApiResponseDto<List<ProductResponseDto>>> getLowStockProducts(@RequestParam(defaultValue= "10") Integer threshold){
 		List<ProductResponseDto> pList= serv.getLowStockProducts(threshold);
@@ -146,6 +228,10 @@ public class ProductController {
 	}
 	
 	//Check sku Exists--->
+	@Operation(
+		    summary = "Check SKU availability",
+		    description = "Checks whether the given SKU already exists."
+	)
 	@GetMapping("/check-sku/{sku}")
 	public ResponseEntity<ApiResponseDto<Boolean>> checkSkuExists(@PathVariable String sku){
 		boolean exists= serv.existsBySku(sku);
