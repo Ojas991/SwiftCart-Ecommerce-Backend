@@ -5,7 +5,7 @@ import java.util.List;
 import com.swiftcart.dto.request.PlaceOrderRequestDto;
 import com.swiftcart.dto.request.UpdateOrderStatusRequestDto;
 import com.swiftcart.dto.response.OrderResponseDto;
-import com.swiftcart.dto.response.PageResponseDTO;
+import com.swiftcart.dto.response.PageResponseDto;
 
 public interface OrderService {
 
@@ -17,7 +17,7 @@ public interface OrderService {
 
 	public List<OrderResponseDto> getOrdersByUserId(Long userId);
 
-	public PageResponseDTO<OrderResponseDto> getAllOrdersPaginated(int page, int size, String sortBy, String sortDir);
+	public PageResponseDto<OrderResponseDto> getAllOrdersPaginated(int page, int size, String sortBy, String sortDir);
 
 	public List<OrderResponseDto> getOrdersByStatus(String status);
 
@@ -25,5 +25,5 @@ public interface OrderService {
 
 	public OrderResponseDto cancelOrder(Long orderId, String reason);
 
-	public PageResponseDTO<OrderResponseDto> searchOrders(String keyword, int page, int size);
+	public PageResponseDto<OrderResponseDto> searchOrders(String keyword, int page, int size);
 }

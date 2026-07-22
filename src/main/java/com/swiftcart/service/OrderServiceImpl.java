@@ -15,7 +15,7 @@ import com.swiftcart.dto.request.PlaceOrderRequestDto;
 import com.swiftcart.dto.request.UpdateOrderStatusRequestDto;
 import com.swiftcart.dto.response.OrderItemResponseDto;
 import com.swiftcart.dto.response.OrderResponseDto;
-import com.swiftcart.dto.response.PageResponseDTO;
+import com.swiftcart.dto.response.PageResponseDto;
 import com.swiftcart.entity.Cart;
 import com.swiftcart.entity.CartItem;
 import com.swiftcart.entity.Order;
@@ -122,13 +122,13 @@ public class OrderServiceImpl implements OrderService{
     }
 
     //map Page to PageResponseDTO--->
-    private PageResponseDTO<OrderResponseDto> mapToPageResponse(Page<Order> orderPage) {
+    private PageResponseDto<OrderResponseDto> mapToPageResponse(Page<Order> orderPage) {
         List<OrderResponseDto> orders = new ArrayList<>();
         for (Order order : orderPage.getContent()) {
             orders.add(mapToOrderResponseDto(order));
         }
 
-        return PageResponseDTO.<OrderResponseDto>builder()
+        return PageResponseDto.<OrderResponseDto>builder()
                 .content(orders)
                 .pageNumber(orderPage.getNumber())
                 .pageSize(orderPage.getSize())
@@ -252,7 +252,7 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public PageResponseDTO<OrderResponseDto> getAllOrdersPaginated(int page, int size, String sortBy, String sortDir) {
+    public PageResponseDto<OrderResponseDto> getAllOrdersPaginated(int page, int size, String sortBy, String sortDir) {
         Sort sort;
         if (sortDir.equalsIgnoreCase("desc")) {
             sort = Sort.by(sortBy).descending();
@@ -316,7 +316,7 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public PageResponseDTO<OrderResponseDto> searchOrders(String keyword, int page, int size) {
+    public PageResponseDto<OrderResponseDto> searchOrders(String keyword, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Order> orderPage = orderRepository.searchOrders(keyword, pageable);
         return mapToPageResponse(orderPage);

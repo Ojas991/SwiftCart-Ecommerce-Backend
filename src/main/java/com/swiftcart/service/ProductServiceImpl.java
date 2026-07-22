@@ -11,10 +11,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.swiftcart.dto.request.ProductRequestDTO;
-import com.swiftcart.dto.request.UpdateProductRequestDTO;
-import com.swiftcart.dto.response.PageResponseDTO;
-import com.swiftcart.dto.response.ProductResponseDTO;
+import com.swiftcart.dto.request.ProductRequestDto;
+import com.swiftcart.dto.request.UpdateProductRequestDto;
+import com.swiftcart.dto.response.PageResponseDto;
+import com.swiftcart.dto.response.ProductResponseDto;
 import com.swiftcart.entity.Product;
 import com.swiftcart.exception.DuplicateResourceException;
 import com.swiftcart.exception.ResourceNotFoundException;
@@ -36,7 +36,7 @@ public class ProductServiceImpl implements ProductService{
 	
 	//Creates a new product after validating SKU uniqueness--->
 	@Override
-	public ProductResponseDTO createProduct(ProductRequestDTO productRequestDTO) {
+	public ProductResponseDto createProduct(ProductRequestDto productRequestDTO) {
 		if(productRequestDTO.getSku() !=null && repo.existsBySku(productRequestDTO.getSku())) {
 			throw new DuplicateResourceException("Product", "sku", productRequestDTO.getSku());
 		}
@@ -57,14 +57,14 @@ public class ProductServiceImpl implements ProductService{
 
 	//Retrieves a product by its unique ID--->
 	@Override
-	public ProductResponseDTO getProductById(Long id) {
+	public ProductResponseDto getProductById(Long id) {
 		Product product = findProductById(id);
 		return mapToProductResponseDTO(product);
 	}
 
 	//Retrieves a product using its SKU--->
 	@Override
-	public ProductResponseDTO getProductBySku(String sku) {
+	public ProductResponseDto getProductBySku(String sku) {
 		Optional<Product> opt= repo.findBySku(sku);
 		
 		if(opt.isPresent()) {
@@ -75,10 +75,10 @@ public class ProductServiceImpl implements ProductService{
 
 	//Returns all products available in the database--->
 	@Override
-	public List<ProductResponseDTO> getAllProducts() {
+	public List<ProductResponseDto> getAllProducts() {
 		List<Product> products = repo.findAll();
 		
-		List<ProductResponseDTO> responseList= new ArrayList<>();
+		List<ProductResponseDto> responseList= new ArrayList<>();
 		
 		for(Product product : products) {
 			responseList.add(mapToProductResponseDTO(product));
@@ -88,7 +88,7 @@ public class ProductServiceImpl implements ProductService{
 
 	//Retrieves products with pagination and sorting support--->
 	@Override
-	public PageResponseDTO<ProductResponseDTO> getAllProductsPaginated(int page, int size, String sortBy,
+	public PageResponseDto<ProductResponseDto> getAllProductsPaginated(int page, int size, String sortBy,
 			String sortDir) {
 		Pageable pageable = createPageable(page, size, sortBy, sortDir);
 		
@@ -99,10 +99,10 @@ public class ProductServiceImpl implements ProductService{
 
 	//Returns all products that are currently available--->
 	@Override
-	public List<ProductResponseDTO> getAvailableProducts() {
+	public List<ProductResponseDto> getAvailableProducts() {
 		List<Product> productList = repo.findByIsAvailableTrue();
 		
-		List<ProductResponseDTO> responseList= new ArrayList<>();
+		List<ProductResponseDto> responseList= new ArrayList<>();
 		
 		for(Product product : productList) {
 			responseList.add(mapToProductResponseDTO(product));
@@ -112,10 +112,10 @@ public class ProductServiceImpl implements ProductService{
 
 	//Retrieves products belonging to the specified category--->
 	@Override
-	public List<ProductResponseDTO> getProductsByCategory(String category) {
+	public List<ProductResponseDto> getProductsByCategory(String category) {
 		List<Product> productList = repo.findByCategoryIgnoreCase(category);
 		
-		List<ProductResponseDTO> responseList= new ArrayList<>();
+		List<ProductResponseDto> responseList= new ArrayList<>();
 		
 		for(Product product : productList) {
 			responseList.add(mapToProductResponseDTO(product));
@@ -125,10 +125,10 @@ public class ProductServiceImpl implements ProductService{
 
 	//Retrieves products within the specified price range--->
 	@Override
-	public List<ProductResponseDTO> getProductsByPriceRange(double minPrice, double maxPrice) {
+	public List<ProductResponseDto> getProductsByPriceRange(double minPrice, double maxPrice) {
 		List<Product> productList= repo.findByPriceBetween(minPrice, maxPrice);
 		
-		List<ProductResponseDTO> responseList= new ArrayList<>();
+		List<ProductResponseDto> responseList= new ArrayList<>();
 		
 		for(Product product : productList) {
 			responseList.add(mapToProductResponseDTO(product));
@@ -138,7 +138,7 @@ public class ProductServiceImpl implements ProductService{
 
 	//Searches products by keyword with pagination--->
 	@Override
-	public PageResponseDTO<ProductResponseDTO> searchProducts(String keyword, int page, int size) {
+	public PageResponseDto<ProductResponseDto> searchProducts(String keyword, int page, int size) {
 		Pageable pageable = PageRequest.of(page, size);
 		
 		Page<Product> productPage = repo.searchProducts(keyword, pageable);
@@ -147,7 +147,7 @@ public class ProductServiceImpl implements ProductService{
 
 	//Updates the specified product with the provided details--->
 	@Override
-	public ProductResponseDTO updateProduct(Long id, UpdateProductRequestDTO productRequestDTO) {
+	public ProductResponseDto updateProduct(Long id, UpdateProductRequestDto productRequestDTO) {
 		Product product = findProductById(id);
 		
 		if(productRequestDTO.getName()==null 
@@ -252,7 +252,7 @@ public class ProductServiceImpl implements ProductService{
 
 	//Retrieves products with stock below the specified threshold--->
 	@Override
-	public List<ProductResponseDTO> getLowStockProducts(Integer threshold) {
+	public List<ProductResponseDto> getLowStockProducts(Integer threshold) {
 		
 		if(threshold < 0) {
 			throw new IllegalArgumentException("Threshold Cannot be Negative: " + threshold);
@@ -260,7 +260,7 @@ public class ProductServiceImpl implements ProductService{
 		
 		List<Product> productList= repo.findLowStockProducts(threshold);
 		
-		List<ProductResponseDTO> responseList= new ArrayList<>();
+		List<ProductResponseDto> responseList= new ArrayList<>();
 		
 		for(Product product : productList) {
 			responseList.add(mapToProductResponseDTO(product));
@@ -303,8 +303,8 @@ public class ProductServiceImpl implements ProductService{
 	}
 	
 	//Convert Product entity to ProductResponseDTO--->
-	private ProductResponseDTO mapToProductResponseDTO(Product product) {
-		return ProductResponseDTO.builder()
+	private ProductResponseDto mapToProductResponseDTO(Product product) {
+		return ProductResponseDto.builder()
 				.id(product.getId())
 				.name(product.getName())
 				.description(product.getDescription())
@@ -320,13 +320,13 @@ public class ProductServiceImpl implements ProductService{
 	}
 	
 	//Convert Page<Product> to PageResponseDTO--->
-	private PageResponseDTO<ProductResponseDTO> mapToPageResponse(Page<Product> productPage) {
+	private PageResponseDto<ProductResponseDto> mapToPageResponse(Page<Product> productPage) {
 		
-		List<ProductResponseDTO> products = new ArrayList<>();
+		List<ProductResponseDto> products = new ArrayList<>();
 		for(Product product : productPage.getContent()) {
 			products.add(mapToProductResponseDTO(product));
 		}
-		return PageResponseDTO.<ProductResponseDTO>builder()
+		return PageResponseDto.<ProductResponseDto>builder()
 				.content(products)
 				.pageNumber(productPage.getNumber())
 				.pageSize(productPage.getSize())

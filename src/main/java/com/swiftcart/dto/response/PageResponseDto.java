@@ -15,7 +15,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PageResponseDTO<T> {
+public class PageResponseDto<T> {
 	private List<T> content;
 	private int pageNumber;
 	private int pageSize;
@@ -28,8 +28,8 @@ public class PageResponseDTO<T> {
 
 	// Static method <----Static method ---->
 
-	public static <T> PageResponseDTO<T> fromPage(Page<T> page) {
-		return PageResponseDTO.<T>builder()
+	public static <T> PageResponseDto<T> fromPage(Page<T> page) {
+		return PageResponseDto.<T>builder()
 				.content(page.getContent())
 				.pageNumber(page.getNumber())
 				.pageSize(page.getSize())

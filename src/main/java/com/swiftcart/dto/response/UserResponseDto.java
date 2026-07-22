@@ -16,7 +16,7 @@ import lombok.Setter;
 	    name = "User Response",
 	    description = "Response DTO containing user details."
 )
-public class UserResponseDTO {
+public class UserResponseDto {
 	@Schema(
 	        description = "Unique identifier of the user",
 	        example = "1"

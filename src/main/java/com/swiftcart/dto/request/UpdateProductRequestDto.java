@@ -15,7 +15,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UpdateProductRequestDTO {
+public class UpdateProductRequestDto {
 
 	@Size(min=2, max=200, message="Name must be between 2 to 200 Character")
 	private String name;

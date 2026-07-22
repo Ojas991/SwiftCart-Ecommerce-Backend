@@ -18,7 +18,7 @@ import lombok.Setter;
 	    name = "User Request",
 	    description = "Request DTO used to register a new user in SwiftCart."
 )
-public class UserRequestDTO {
+public class UserRequestDto {
 	
 	@NotBlank(message= "Full Name is Required")
 	@Size(min=2, max=100, message="Full Name Must be between 2 to 100 Characters")

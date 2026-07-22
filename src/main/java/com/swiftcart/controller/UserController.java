@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.swiftcart.dto.request.UpdateUserRequestDTO;
-import com.swiftcart.dto.request.UserRequestDTO;
+import com.swiftcart.dto.request.UpdateUserRequestDto;
+import com.swiftcart.dto.request.UserRequestDto;
 import com.swiftcart.dto.response.ApiResponseDto;
-import com.swiftcart.dto.response.UserResponseDTO;
+import com.swiftcart.dto.response.UserResponseDto;
 import com.swiftcart.service.UserService;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -58,11 +58,11 @@ public class UserController {
 		    @ApiResponse(responseCode = "500", description = "Internal server error")
 		})
 	@PostMapping
-	public ResponseEntity<ApiResponseDto<UserResponseDTO>> createUser(@Valid @RequestBody UserRequestDTO userRequest) {
+	public ResponseEntity<ApiResponseDto<UserResponseDto>> createUser(@Valid @RequestBody UserRequestDto userRequest) {
 		
-		UserResponseDTO dto = serv.createUser(userRequest);
+		UserResponseDto dto = serv.createUser(userRequest);
 		
-		ApiResponseDto<UserResponseDTO>  obj = ApiResponseDto.success("User Created Successfully", dto);
+		ApiResponseDto<UserResponseDto>  obj = ApiResponseDto.success("User Created Successfully", dto);
 		
 		return new ResponseEntity<>(obj, HttpStatus.CREATED);
 	}
@@ -78,11 +78,11 @@ public class UserController {
 		    @ApiResponse(responseCode = "500", description = "Internal server error")
 		})
 	@GetMapping("/{id}")
-	public ResponseEntity<ApiResponseDto<UserResponseDTO>> getUserById(@PathVariable Long id) {
+	public ResponseEntity<ApiResponseDto<UserResponseDto>> getUserById(@PathVariable Long id) {
 		
-		UserResponseDTO dto = serv.getUserById(id);
+		UserResponseDto dto = serv.getUserById(id);
 		
-		ApiResponseDto<UserResponseDTO>  obj = ApiResponseDto.success(dto);
+		ApiResponseDto<UserResponseDto>  obj = ApiResponseDto.success(dto);
 		
 		return ResponseEntity.ok(obj);
 	}
@@ -98,11 +98,11 @@ public class UserController {
 		    @ApiResponse(responseCode = "500", description = "Internal server error")
 		})
 	@GetMapping("/email/{email}")
-	public ResponseEntity<ApiResponseDto<UserResponseDTO>> getUserByEmail(@PathVariable String email) {
+	public ResponseEntity<ApiResponseDto<UserResponseDto>> getUserByEmail(@PathVariable String email) {
 		
-		UserResponseDTO dto = serv.getUserByEmail(email);
+		UserResponseDto dto = serv.getUserByEmail(email);
 		
-		ApiResponseDto<UserResponseDTO>  obj = ApiResponseDto.success(dto);
+		ApiResponseDto<UserResponseDto>  obj = ApiResponseDto.success(dto);
 		
 		return ResponseEntity.ok(obj);
 	}
@@ -117,11 +117,11 @@ public class UserController {
 		    @ApiResponse(responseCode = "500", description = "Internal server error")
 		})
 	@GetMapping
-	public ResponseEntity<ApiResponseDto<List<UserResponseDTO>>> getAllUsers() {
+	public ResponseEntity<ApiResponseDto<List<UserResponseDto>>> getAllUsers() {
 		
-		List<UserResponseDTO> users = serv.getAllUsers();
+		List<UserResponseDto> users = serv.getAllUsers();
 		
-		ApiResponseDto<List<UserResponseDTO>>  obj = ApiResponseDto.success(users);
+		ApiResponseDto<List<UserResponseDto>>  obj = ApiResponseDto.success(users);
 		
 		return ResponseEntity.ok(obj);
 	}
@@ -136,11 +136,11 @@ public class UserController {
 		    @ApiResponse(responseCode = "500", description = "Internal server error")
 		})
 	@GetMapping("/active")
-	public ResponseEntity<ApiResponseDto<List<UserResponseDTO>>> getActiveUsers() {
+	public ResponseEntity<ApiResponseDto<List<UserResponseDto>>> getActiveUsers() {
 		
-		List<UserResponseDTO> users = serv.getActiveUsers();
+		List<UserResponseDto> users = serv.getActiveUsers();
 		
-		ApiResponseDto<List<UserResponseDTO>>  obj = ApiResponseDto.success(users);
+		ApiResponseDto<List<UserResponseDto>>  obj = ApiResponseDto.success(users);
 		
 		return ResponseEntity.ok(obj);
 	}
@@ -157,11 +157,11 @@ public class UserController {
 		    @ApiResponse(responseCode = "500", description = "Internal server error")
 		})
 	@PutMapping("/{id}")
-	public ResponseEntity<ApiResponseDto<UserResponseDTO>> updateUser(@PathVariable Long id,@Valid @RequestBody UpdateUserRequestDTO userRequest) {
+	public ResponseEntity<ApiResponseDto<UserResponseDto>> updateUser(@PathVariable Long id,@Valid @RequestBody UpdateUserRequestDto userRequest) {
 		
-		UserResponseDTO dto = serv.updateUser(id, userRequest);
+		UserResponseDto dto = serv.updateUser(id, userRequest);
 		
-		ApiResponseDto<UserResponseDTO>  obj = ApiResponseDto.success("User updated Successfully", dto);
+		ApiResponseDto<UserResponseDto>  obj = ApiResponseDto.success("User updated Successfully", dto);
 		
 		return ResponseEntity.ok(obj);
 	}
@@ -213,11 +213,11 @@ public class UserController {
 		    @ApiResponse(responseCode = "500", description = "Internal server error")
 		})
 	@GetMapping("/search")
-	public ResponseEntity<ApiResponseDto<List<UserResponseDTO>>> searchUsers(@RequestParam String keyword) {
+	public ResponseEntity<ApiResponseDto<List<UserResponseDto>>> searchUsers(@RequestParam String keyword) {
 		
-		List<UserResponseDTO> users = serv.searchUser(keyword);
+		List<UserResponseDto> users = serv.searchUser(keyword);
 		
-		ApiResponseDto<List<UserResponseDTO>>  obj = ApiResponseDto.success(users);
+		ApiResponseDto<List<UserResponseDto>>  obj = ApiResponseDto.success(users);
 		
 		return ResponseEntity.ok(obj);
 	}

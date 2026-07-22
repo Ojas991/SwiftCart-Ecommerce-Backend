@@ -17,7 +17,7 @@ import lombok.Setter;
     name = "Update User Request",
     description = "Request DTO used to update an existing user's details."
 )
-public class UpdateUserRequestDTO {
+public class UpdateUserRequestDto {
 
     @Size(min = 2, max = 100, message = "Full Name must be between 2 and 100 characters")
     @Schema(

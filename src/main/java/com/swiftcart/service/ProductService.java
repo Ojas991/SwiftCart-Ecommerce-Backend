@@ -2,45 +2,45 @@ package com.swiftcart.service;
 
 import java.util.List;
 
-import com.swiftcart.dto.request.ProductRequestDTO;
-import com.swiftcart.dto.request.UpdateProductRequestDTO;
-import com.swiftcart.dto.response.PageResponseDTO;
-import com.swiftcart.dto.response.ProductResponseDTO;
+import com.swiftcart.dto.request.ProductRequestDto;
+import com.swiftcart.dto.request.UpdateProductRequestDto;
+import com.swiftcart.dto.response.PageResponseDto;
+import com.swiftcart.dto.response.ProductResponseDto;
 
 public interface ProductService {
-	ProductResponseDTO createProduct(ProductRequestDTO productRequestDTO);
+	ProductResponseDto createProduct(ProductRequestDto productRequestDTO);
 	
-	ProductResponseDTO getProductById(Long id);
+	ProductResponseDto getProductById(Long id);
 	
-	ProductResponseDTO getProductBySku(String sku);
+	ProductResponseDto getProductBySku(String sku);
 	
-	List<ProductResponseDTO> getAllProducts();
+	List<ProductResponseDto> getAllProducts();
 	
-	PageResponseDTO<ProductResponseDTO> getAllProductsPaginated(
+	PageResponseDto<ProductResponseDto> getAllProductsPaginated(
 	            int page,
 	            int size,
 	            String sortBy,
 	            String sortDir
 	    );
 	
-	List<ProductResponseDTO> getAvailableProducts();
+	List<ProductResponseDto> getAvailableProducts();
 	
-	List<ProductResponseDTO> getProductsByCategory(String category);
+	List<ProductResponseDto> getProductsByCategory(String category);
 	
-    List<ProductResponseDTO> getProductsByPriceRange(
+    List<ProductResponseDto> getProductsByPriceRange(
             double minPrice,
             double maxPrice
     );
     
-    PageResponseDTO<ProductResponseDTO> searchProducts(
+    PageResponseDto<ProductResponseDto> searchProducts(
             String keyword,
             int page,
             int size
     );
 
-    ProductResponseDTO updateProduct(
+    ProductResponseDto updateProduct(
             Long id,
-            UpdateProductRequestDTO productRequestDTO
+            UpdateProductRequestDto productRequestDTO
     );
     
     void updateStock(
@@ -48,7 +48,7 @@ public interface ProductService {
             Integer quantity
     );
 
-    List<ProductResponseDTO> getLowStockProducts(
+    List<ProductResponseDto> getLowStockProducts(
             Integer threshold
     );
 

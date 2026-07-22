@@ -7,9 +7,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.swiftcart.dto.request.UpdateUserRequestDTO;
-import com.swiftcart.dto.request.UserRequestDTO;
-import com.swiftcart.dto.response.UserResponseDTO;
+import com.swiftcart.dto.request.UpdateUserRequestDto;
+import com.swiftcart.dto.request.UserRequestDto;
+import com.swiftcart.dto.response.UserResponseDto;
 import com.swiftcart.entity.Cart;
 import com.swiftcart.entity.User;
 import com.swiftcart.exception.DuplicateResourceException;
@@ -30,8 +30,8 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	//Map To Response--->
-	private UserResponseDTO mapToResponse(User user) {
-		return UserResponseDTO.builder()
+	private UserResponseDto mapToResponse(User user) {
+		return UserResponseDto.builder()
 				.id(user.getId())
 				.fullName(user.getFullName())
 				.email(user.getEmail())
@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService{
 	
 	
 	@Override
-	public UserResponseDTO createUser(UserRequestDTO userRequest) {
+	public UserResponseDto createUser(UserRequestDto userRequest) {
 		
 		if(existsByEmail(userRequest.getEmail() ) ){
 			throw new DuplicateResourceException("User", "email", userRequest.getEmail());
@@ -78,14 +78,14 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public UserResponseDTO getUserById(Long id) {
+	public UserResponseDto getUserById(Long id) {
 		
 		User user = findUserById(id);
 		return mapToResponse(user);
 	}
 
 	@Override
-	public UserResponseDTO getUserByEmail(String email) {
+	public UserResponseDto getUserByEmail(String email) {
 		
 		Optional<User> opt= userRepo.findByEmail(email);
 		if(opt.isPresent()) {
@@ -97,10 +97,10 @@ public class UserServiceImpl implements UserService{
 
 	
 	@Override
-	public List<UserResponseDTO> getAllUsers() {
+	public List<UserResponseDto> getAllUsers() {
 		List<User> users= userRepo.findAll(); 
 		
-		List<UserResponseDTO> responseList= new ArrayList<>();
+		List<UserResponseDto> responseList= new ArrayList<>();
 		for(User user : users) {
 			responseList.add(mapToResponse(user));
 		}
@@ -108,10 +108,10 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public List<UserResponseDTO> getActiveUsers() {
+	public List<UserResponseDto> getActiveUsers() {
 		List<User> users= userRepo.findByIsActiveTrue(); 
 		
-		List<UserResponseDTO> responseList= new ArrayList<>();
+		List<UserResponseDto> responseList= new ArrayList<>();
 		for(User user : users) {
 			responseList.add(mapToResponse(user));
 		}
@@ -119,7 +119,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public UserResponseDTO updateUser(Long id, UpdateUserRequestDTO userRequest) {
+	public UserResponseDto updateUser(Long id, UpdateUserRequestDto userRequest) {
 		User user= findUserById(id);
 		if(userRequest.getFullName()==null && 
 		   userRequest.getPassword()==null &&
@@ -192,9 +192,9 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public List<UserResponseDTO> searchUser(String keyword) {
+	public List<UserResponseDto> searchUser(String keyword) {
 		List<User> users= userRepo.searchByNameOrEmail(keyword);
-		List<UserResponseDTO> responseList= new ArrayList<>();
+		List<UserResponseDto> responseList= new ArrayList<>();
 		
 		for(User user : users) {
 			responseList.add(mapToResponse(user));

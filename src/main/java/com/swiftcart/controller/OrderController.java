@@ -18,7 +18,7 @@ import com.swiftcart.dto.request.PlaceOrderRequestDto;
 import com.swiftcart.dto.request.UpdateOrderStatusRequestDto;
 import com.swiftcart.dto.response.ApiResponseDto;
 import com.swiftcart.dto.response.OrderResponseDto;
-import com.swiftcart.dto.response.PageResponseDTO;
+import com.swiftcart.dto.response.PageResponseDto;
 import com.swiftcart.service.OrderService;
 
 import jakarta.validation.Valid;
@@ -67,12 +67,12 @@ public class OrderController {
 
     //Get all orders (paginated)
     @GetMapping
-    public ResponseEntity<ApiResponseDto<PageResponseDTO<OrderResponseDto>>> getAllOrdersPaginated(
+    public ResponseEntity<ApiResponseDto<PageResponseDto<OrderResponseDto>>> getAllOrdersPaginated(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "orderDate") String sortBy,
             @RequestParam(defaultValue = "desc") String sortDir) {
-        PageResponseDTO<OrderResponseDto> orders = orderService.getAllOrdersPaginated(page, size, sortBy, sortDir);
+        PageResponseDto<OrderResponseDto> orders = orderService.getAllOrdersPaginated(page, size, sortBy, sortDir);
         return ResponseEntity.ok(ApiResponseDto.success(orders));
     }
 
@@ -104,11 +104,11 @@ public class OrderController {
 
     // Search orders
     @GetMapping("/search")
-    public ResponseEntity<ApiResponseDto<PageResponseDTO<OrderResponseDto>>> searchOrders(
+    public ResponseEntity<ApiResponseDto<PageResponseDto<OrderResponseDto>>> searchOrders(
             @RequestParam String keyword,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
-        PageResponseDTO<OrderResponseDto> orders = orderService.searchOrders(keyword, page, size);
+        PageResponseDto<OrderResponseDto> orders = orderService.searchOrders(keyword, page, size);
         return ResponseEntity.ok(ApiResponseDto.success(orders));
     }
 }

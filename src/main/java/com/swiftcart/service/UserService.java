@@ -2,29 +2,29 @@ package com.swiftcart.service;
 
 import java.util.List;
 
-import com.swiftcart.dto.request.UpdateUserRequestDTO;
-import com.swiftcart.dto.request.UserRequestDTO;
-import com.swiftcart.dto.response.UserResponseDTO;
+import com.swiftcart.dto.request.UpdateUserRequestDto;
+import com.swiftcart.dto.request.UserRequestDto;
+import com.swiftcart.dto.response.UserResponseDto;
 
 public interface UserService {
 
-	public UserResponseDTO createUser(UserRequestDTO userRequestDto);
+	public UserResponseDto createUser(UserRequestDto userRequestDto);
 	
-	public UserResponseDTO getUserById(Long id);
+	public UserResponseDto getUserById(Long id);
 	
-	public UserResponseDTO getUserByEmail(String email);
+	public UserResponseDto getUserByEmail(String email);
 	
-	public List<UserResponseDTO> getAllUsers();
+	public List<UserResponseDto> getAllUsers();
 	
-	public List<UserResponseDTO> getActiveUsers();
+	public List<UserResponseDto> getActiveUsers();
 	
-	public UserResponseDTO updateUser(Long id, UpdateUserRequestDTO userRequest);
+	public UserResponseDto updateUser(Long id, UpdateUserRequestDto userRequest);
 	
 	public void activateUser(Long id);
 	
 	public void deActivateUser(Long id);
 	
-	public List<UserResponseDTO> searchUser(String keyword);
+	public List<UserResponseDto> searchUser(String keyword);
 	
 	public boolean existsByEmail(String email);
 }
